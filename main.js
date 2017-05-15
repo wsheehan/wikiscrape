@@ -53,10 +53,12 @@
 	function insertContent(content) {
 		article.innerHTML = '<p>' + content['extract'] + '</p>';
 		document.getElementById('article-query').value = '';
+		document.querySelector('h1').innerHTML = content['displayTitle'];
 	}
 
 	function insertError() {
 		article.innerHTML = '<p>Sorry your search returned no results</p>';
+		document.querySelector('h1').innerHTML = 'Try again!';
 	}
 
 })()
