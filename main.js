@@ -4,23 +4,38 @@
 	var article = document.querySelector('article');	
 	var httpRequest;
 
+	var languages = {
+		'English': 'en',
+		'中文': 'zh',
+		'Español': 'es',
+		'हिन्दी': 'hi',
+		'اللغة العربية': 'ar',
+		'Português': 'pt',
+		'বাংলা': 'bn',
+		'Русский': 'ru',
+		'日本語': 'ja',
+		'Français': 'fr'
+	}
+
 	fetchButton.addEventListener('click', function() { fetchContent() })
 
 	function fetchContent() {
 
 		// Get search query
-		var query = document.getElementById('article-query').value;
-		console.log("FETCH CONTENT");
+		var search = {
+			'query': document.getElementById('article-query').value,
+			'lang': document.getElementById('article-lang').value
+		}
+		var endpoint = 'https://' + languages[search['lang']] + '.wikipedia.org/api/rest_v1/page/summary/' + search['query'];
 
 		httpRequest = new XMLHttpRequest();	
-
 		if (!httpRequest) {
 	      console.error('Cannot create an XMLHTTP instance');
 	      return false;
 	    }
 
 		httpRequest.onreadystatechange = parseRequest
-		httpRequest.open('GET', 'https://en.wikipedia.org/api/rest_v1/page/summary/' + query, false);
+		httpRequest.open('GET', endpoint);
 		httpRequest.send();
 	}
 
@@ -30,14 +45,18 @@
 				var data = JSON.parse(httpRequest.responseText)
 				insertContent(data)
 			} else {
-				// Handle error
+				insertError()
 			}
 		}
 	}
 
 	function insertContent(content) {
-		console.log("INSERT CONTENT");
-		article.innerHTML = "<p>" + content['extract'] + "</p>";
+		article.innerHTML = '<p>' + content['extract'] + '</p>';
+		document.getElementById('article-query').value = '';
+	}
+
+	function insertError() {
+		article.innerHTML = '<p>Sorry your search returned no results</p>';
 	}
 
 })()
