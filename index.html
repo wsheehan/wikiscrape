@@ -4,10 +4,14 @@
 	<title>Wikiscrape</title>
 
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
 	<header>
-		<h1>Search...</h1>
+		<!-- Free image from iconfinder -->
+		<img src="https://cdn2.iconfinder.com/data/icons/ios-tab-bar/25/Hamburger_Round-128.png" id="hamburger-menu">
+		<h1>Wikiscrape</h1>
 	</header>
 
 	<form>
@@ -24,12 +28,15 @@
 			<option>日本語</option>
 			<option>Français</option>
 		</select>
-		<button type="button">Fetch Article</button>
+		<button type="button">Fetch</button>
+		<span id="fetch-error">Error retrieving article</span>
 	</form>
 
-	<article>
-		<p>Search for an article</p>
-	</article>
+	<div id="article-wrapper">
+		<article>
+			<p>Search for an article</p>
+		</article>
+	</div>
 </body>
 
 <script type="text/javascript" src="main.js"></script>
