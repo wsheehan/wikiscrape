@@ -1,9 +1,13 @@
 (function() {
 
+	// global declarations
 	var fetchButton = document.querySelector('button');
-	var article = document.querySelector('article');	
+	var article = document.querySelector('article');
+	var form = document.querySelector('form');
+	var articleWrapper = document.getElementById('article-wrapper');	
 	var httpRequest;
 
+	// All of our languages
 	var languages = {
 		'English': 'en',
 		'中文': 'zh',
@@ -34,11 +38,13 @@
 	      return false;
 	    }
 
+	    // perform ajax request
 		httpRequest.onreadystatechange = parseRequest
 		httpRequest.open('GET', endpoint);
 		httpRequest.send();
 	}
 
+	// parse request success
 	function parseRequest() {
 		if (httpRequest.readyState === 4) {
 			if (httpRequest.status === 200) {
@@ -50,15 +56,54 @@
 		}
 	}
 
+	// Handle successful request
 	function insertContent(content) {
 		article.innerHTML = '<p>' + content['extract'] + '</p>';
 		document.getElementById('article-query').value = '';
-		document.querySelector('h1').innerHTML = content['displayTitle'];
+		document.querySelector('h1').innerHTML = content['displaytitle'];
+
+		// clear error
+		document.getElementById('fetch-error').style.display = 'none';
+		fetchButton.style.border = 'none';
+
+		// close menu on success
+		if (window.innerWidth < 700) {
+			closeMenu();
+		}
 	}
 
+	// Handle unsuccessful request
 	function insertError() {
-		article.innerHTML = '<p>Sorry your search returned no results</p>';
-		document.querySelector('h1').innerHTML = 'Try again!';
+		fetchButton.style.border = '1px solid red';
+		document.getElementById('fetch-error').style.display = 'inline-block';
+	}
+
+	// Mobile Menu config
+	var menu = document.getElementById('hamburger-menu');
+	var open = true;
+	var cancelUrl = 'https://cdn3.iconfinder.com/data/icons/virtual-notebook/16/button_close-128.png';
+	var hamburgerUrl = 'https://cdn2.iconfinder.com/data/icons/ios-tab-bar/25/Hamburger_Round-128.png';
+
+	if (window.innerWidth < 700) {
+		menu.src = cancelUrl;
+	}
+
+	menu.addEventListener('click', function() {
+		open ? closeMenu() : openMenu();
+	});
+
+	function openMenu() {
+		form.style.display = 'inline-block';
+		open = true;
+		menu.src = cancelUrl;
+		articleWrapper.style.backgroundColor = 'silver';
+	}
+
+	function closeMenu() {
+		form.style.display = 'none';
+		open = false;
+		menu.src = hamburgerUrl
+		articleWrapper.style.backgroundColor = 'white';
 	}
 
 })()
